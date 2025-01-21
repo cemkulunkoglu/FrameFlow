@@ -6,6 +6,8 @@ const frameText = document.getElementById('frameText');
 const colorPickerWrapper = document.querySelector('.color-picker-wrapper');
 const textInputWrapper = document.querySelector('.text-input-wrapper');
 const textColor = document.getElementById('textColor');
+const horizontalRange = document.getElementById('horizontalRange');
+const verticalRange = document.getElementById('verticalRange');
 
 // Çerçeve elementi oluştur
 const frameBorder = document.createElement('div');
@@ -28,6 +30,52 @@ previewCanvas.style.pointerEvents = 'none';
 previewCanvas.style.zIndex = '1';
 document.querySelector('.crop-area').appendChild(previewCanvas);
 
+// Fotoğraf pozisyonu için değişkenler
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
+let startX, startY;
+
+function updatePreview() {
+    // Maksimum kaydırma sınırlarını hesapla
+    const maxOffset = 50; // Kaydırma sınırı (piksel)
+    
+    // Sınırları kontrol et
+    offsetX = Math.max(-maxOffset, Math.min(maxOffset, offsetX));
+    offsetY = Math.max(-maxOffset, Math.min(maxOffset, offsetY));
+    
+    // Pozisyonu güncelle
+    preview.style.objectPosition = `${50 + (offsetX / 1.5)}% ${50 + (offsetY / 1.5)}%`;
+}
+
+function startDragging(e) {
+    isDragging = true;
+    startX = e.clientX - offsetX;
+    startY = e.clientY - offsetY;
+    preview.style.cursor = 'grabbing';
+}
+
+function drag(e) {
+    if (!isDragging) return;
+
+    e.preventDefault();
+    // Kaydırma işlemini tersine çevir
+    offsetX = startX - e.clientX;
+    offsetY = startY - e.clientY;
+
+    updatePreview();
+}
+
+function stopDragging() {
+    isDragging = false;
+    preview.style.cursor = 'grab';
+}
+
+// Mouse olayları
+preview.addEventListener('mousedown', startDragging);
+document.addEventListener('mousemove', drag);
+document.addEventListener('mouseup', stopDragging);
+
 imageInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
@@ -43,6 +91,13 @@ imageInput.addEventListener('change', function(e) {
                 preview.src = img.src;
                 preview.style.width = '300px';
                 preview.style.height = '300px';
+                preview.style.cursor = 'grab';
+                preview.style.objectFit = 'cover';
+                preview.style.objectPosition = '50% 50%';
+                
+                // Değerleri sıfırla
+                offsetX = 0;
+                offsetY = 0;
                 
                 preview.classList.remove('hidden');
                 colorPickerWrapper.classList.remove('hidden');
@@ -50,7 +105,6 @@ imageInput.addEventListener('change', function(e) {
                 document.querySelector('.quality-wrapper').classList.remove('hidden');
                 downloadBtn.classList.remove('hidden');
                 
-                // Fotoğraf yüklendiğinde çerçeveyi otomatik göster
                 updateCustomFrame(frameColor.value);
             }
             img.src = e.target.result;
@@ -64,8 +118,19 @@ frameColor.addEventListener('input', function(e) {
 });
 
 frameText.addEventListener('input', function(e) {
-    // Input değerini büyük harfe çevir ve input'a geri yaz
-    e.target.value = e.target.value.toUpperCase();
+    // Türkçe karakter dönüşümleri
+    const turkishToUpper = str => str
+        .replace(/i/g, 'İ')
+        .replace(/ı/g, 'I')
+        .replace(/ç/g, 'Ç')
+        .replace(/ğ/g, 'Ğ')
+        .replace(/ö/g, 'Ö')
+        .replace(/ş/g, 'Ş')
+        .replace(/ü/g, 'Ü')
+        .toUpperCase();
+    
+    // Input değerini Türkçe büyük harfe çevir ve input'a geri yaz
+    e.target.value = turkishToUpper(e.target.value);
     let text = e.target.value.trim();
     updateFrameText(text);
 });
@@ -119,20 +184,34 @@ function drawRadialText(ctx, text, x, y, radius, startAngle) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
+    // Türkçe karakter dönüşümleri
+    const turkishToUpper = str => str
+        .replace(/i/g, 'İ')
+        .replace(/ı/g, 'I')
+        .replace(/ç/g, 'Ç')
+        .replace(/ğ/g, 'Ğ')
+        .replace(/ö/g, 'Ö')
+        .replace(/ş/g, 'Ş')
+        .replace(/ü/g, 'Ü')
+        .toUpperCase();
+    
+    // Metni Türkçe büyük harfe çevir
+    text = turkishToUpper(text);
+    
     // Harfleri radyal olarak yerleştir
     const chars = text.split('');
-    const totalAngle = Math.PI / 2; // 90 derece
-    const angleStep = totalAngle / (chars.length - 1);
+    const anglePerChar = Math.PI / 24; // Sabit harf arası açı (7.5 derece)
+    const totalAngle = anglePerChar * (chars.length - 1); // Toplam açı
+    const startingAngle = Math.PI - Math.PI/8; // Başlangıç açısı (22.5 derece yukarıda)
     
     chars.forEach((char, i) => {
-        // Sol ortadan başlayıp aşağı doğru git
-        const angle = Math.PI - angleStep * i;
+        const angle = startingAngle - (anglePerChar * i);
         const charX = x + Math.cos(angle) * radius;
         const charY = y + Math.sin(angle) * radius;
         
         ctx.save();
         ctx.translate(charX, charY);
-        ctx.rotate(angle + (3 * Math.PI/2)); // 270 derece
+        ctx.rotate(angle + (3 * Math.PI/2));
         ctx.fillText(char, 0, 0);
         ctx.restore();
     });
@@ -151,19 +230,56 @@ textColor.addEventListener('input', function(e) {
 downloadBtn.addEventListener('click', function() {
     const canvas = document.createElement('canvas');
     const quality = parseInt(document.getElementById('imageQuality').value);
-    const FIXED_SIZE = quality;
-    canvas.width = FIXED_SIZE;
-    canvas.height = FIXED_SIZE;
-    
+    canvas.width = quality;
+    canvas.height = quality;
     const ctx = canvas.getContext('2d');
-    const CENTER = FIXED_SIZE/2;
+    const CENTER = quality / 2;
     
-    // Saydam arka plan
-    ctx.clearRect(0, 0, FIXED_SIZE, FIXED_SIZE);
+    // Fotoğrafı çiz
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(CENTER, CENTER, quality * 0.375, 0, Math.PI * 2);
+    ctx.clip();
+    
+    // Object-position değerlerini al ve ters çevir
+    const position = window.getComputedStyle(preview).objectPosition.split(' ');
+    const posX = 100 - parseFloat(position[0]); // X değerini ters çevir (82.6667% -> 17.3333%)
+    const posY = 100 - parseFloat(position[1]); // Y değerini ters çevir (83.3333% -> 16.6667%)
+    
+    // Orijinal fotoğrafın en/boy oranını koru
+    const aspectRatio = preview.naturalWidth / preview.naturalHeight;
+    let drawWidth, drawHeight;
+    
+    if (aspectRatio >= 1) {
+        drawHeight = quality * 0.75;
+        drawWidth = drawHeight * aspectRatio;
+    } else {
+        drawWidth = quality * 0.75;
+        drawHeight = drawWidth / aspectRatio;
+    }
+    
+    // Kaydırma miktarını hesapla
+    const moveX = ((posX - 50) / 100) * (drawWidth - quality * 0.75);
+    const moveY = ((posY - 50) / 100) * (drawHeight - quality * 0.75);
+    
+    // Sınırları kontrol et
+    const maxOffsetX = (drawWidth - quality * 0.75) / 2;
+    const maxOffsetY = (drawHeight - quality * 0.75) / 2;
+    const offsetX = Math.max(-maxOffsetX, Math.min(maxOffsetX, moveX));
+    const offsetY = Math.max(-maxOffsetY, Math.min(maxOffsetY, moveY));
+    
+    ctx.drawImage(
+        preview,
+        CENTER - (drawWidth / 2) + offsetX,
+        CENTER - (drawHeight / 2) + offsetY,
+        drawWidth,
+        drawHeight
+    );
+    ctx.restore();
     
     // Çerçeveyi çiz
     if (!frameBorder.classList.contains('hidden')) {
-        const gradient = ctx.createLinearGradient(0, FIXED_SIZE, FIXED_SIZE, 0);
+        const gradient = ctx.createLinearGradient(0, quality, quality, 0);
         const rgb = hexToRgb(frameColor.value);
         
         gradient.addColorStop(0, `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`);
@@ -174,39 +290,25 @@ downloadBtn.addEventListener('click', function() {
         gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
         
         ctx.beginPath();
-        ctx.arc(CENTER, CENTER, FIXED_SIZE/2, 0, Math.PI * 2);
-        ctx.arc(CENTER, CENTER, FIXED_SIZE * 0.375, 0, Math.PI * 2, true); // İç çemberi orantılı yap
+        ctx.arc(CENTER, CENTER, quality / 2, 0, Math.PI * 2);
+        ctx.arc(CENTER, CENTER, quality * 0.375, 0, Math.PI * 2, true);
         ctx.fillStyle = gradient;
         ctx.fill();
     }
     
-    // Fotoğrafı çiz
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(CENTER, CENTER, FIXED_SIZE * 0.375, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(
-        preview, 
-        CENTER - (FIXED_SIZE * 0.375), 
-        CENTER - (FIXED_SIZE * 0.375), 
-        FIXED_SIZE * 0.75, 
-        FIXED_SIZE * 0.75
-    );
-    ctx.restore();
-    
-    // Radyal yazıyı ekle
+    // Yazıyı çiz
     if (frameText.value.trim()) {
-        let text = frameText.value.trim();
-        
         ctx.fillStyle = textColor.value;
-        ctx.font = `bold ${FIXED_SIZE * 0.06}px SF Pro Display`; // Font boyutunu orantılı yap
-        drawRadialText(ctx, text, CENTER, CENTER, FIXED_SIZE * 0.4375, Math.PI);
+        ctx.font = `bold ${quality * 0.06}px SF Pro Display`;
+        drawRadialText(ctx, frameText.value.trim(), CENTER, CENTER, quality * 0.4375, Math.PI);
     }
     
     const link = document.createElement('a');
     link.download = 'profil-fotografi.png';
-    // PNG formatında maksimum kalite
     link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
 });
+
+horizontalRange.addEventListener('input', updatePreview);
+verticalRange.addEventListener('input', updatePreview);
 

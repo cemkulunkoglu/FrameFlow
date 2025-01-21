@@ -18,24 +18,28 @@
                 <h1 class="display-4 mb-4">FrameFlow</h1>
                 <p class="lead text-muted mb-4">Profesyonel profil fotoğrafları için çerçeve ve metin düzenleyici</p>
                 
-                <div class="instructions-card mb-4">
-                    <h5 class="mb-3">Nasıl Kullanılır?</h5>
+                <div class="instructions-card">
+                    <h5>Nasıl Kullanılır?</h5>
                     <div class="steps">
                         <div class="step">
                             <div class="step-number">1</div>
-                            <p>Profil fotoğrafınızı yükleyin</p>
+                            <p>Fotoğraf Seç butonuna tıklayarak bir fotoğraf yükleyin</p>
                         </div>
                         <div class="step">
                             <div class="step-number">2</div>
-                            <p>Çerçeve rengini ve kalitesini ayarlayın</p>
+                            <p>Fotoğrafı sürükleyerek istediğiniz şekilde konumlandırın</p>
                         </div>
                         <div class="step">
                             <div class="step-number">3</div>
-                            <p>Çerçeveye metin ekleyin ve özelleştirin</p>
+                            <p>Çerçeve rengini değiştirmek için renk seçiciyi kullanın</p>
                         </div>
                         <div class="step">
                             <div class="step-number">4</div>
-                            <p>Hazır fotoğrafınızı indirin</p>
+                            <p>İsterseniz çerçeveye metin ekleyin ve metin rengini ayarlayın</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <p>Kalite seçeneğini belirleyin ve Fotoğrafı İndir butonuna tıklayın</p>
                         </div>
                     </div>
                 </div>
@@ -72,7 +76,7 @@
                                     <input type="text" id="frameText" class="frame-text-input" 
                                            placeholder="Çerçeveye metin ekleyin" maxlength="20">
                                     <div class="color-control">
-                                        <input type="color" id="textColor" value="#ffffff" class="text-color-picker">
+                                        <input type="color" id="textColor" value="#000000" class="text-color-picker">
                                         <label for="textColor" class="color-picker-label">Metin Rengi</label>
                                     </div>
                                 </div>
@@ -105,5 +109,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 </html> 

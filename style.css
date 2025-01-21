@@ -87,12 +87,18 @@ body {
 }
 
 #preview {
+    cursor: grab;
     width: 300px;
     height: 300px;
-    border-radius: 50%;
     object-fit: cover;
+    object-position: 50% 50%;
+    border-radius: 50%;
     position: relative;
     z-index: 2;
+}
+
+#preview:active {
+    cursor: grabbing;
 }
 
 .frame-border {
