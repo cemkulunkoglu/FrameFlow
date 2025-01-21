@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameFlow | Profil Fotoğrafı Düzenleyici</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SF Pro Display font -->
+    <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-fluid py-5">
+        <div class="row">
+            <!-- Sol Sütun - Açıklamalar -->
+            <div class="col-md-4 instructions-column">
+                <h1 class="display-4 mb-4">FrameFlow</h1>
+                <p class="lead text-muted mb-4">Profesyonel profil fotoğrafları için çerçeve ve metin düzenleyici</p>
+                
+                <div class="instructions-card mb-4">
+                    <h5 class="mb-3">Nasıl Kullanılır?</h5>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <p>Profil fotoğrafınızı yükleyin</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <p>Çerçeve rengini ve kalitesini ayarlayın</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <p>Çerçeveye metin ekleyin ve özelleştirin</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <p>Hazır fotoğrafınızı indirin</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h6>📝 Özellikler:</h6>
+                    <ul class="feature-list">
+                        <li>Yüksek kaliteli çıktı (1080p, 2K, 4K)</li>
+                        <li>Dairesel kesim ve saydam arka plan</li>
+                        <li>Özelleştirilebilir çerçeve rengi</li>
+                        <li>Kavisli metin ekleme</li>
+                        <li>Metin rengi özelleştirme</li>
+                        <li>Otomatik büyük harf dönüşümü</li>
+                        <li>Tüm sosyal medya platformlarına uygun</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sağ Sütun - Düzenleme Alanı -->
+            <div class="col-md-8 editor-column">
+                <div class="editor-container">
+                    <div class="upload-section mb-4">
+                        <div class="action-buttons">
+                            <label for="imageInput" class="btn btn-primary upload-btn">
+                                Fotoğraf Seç
+                                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                            </label>
+                            <div class="color-picker-wrapper hidden">
+                                <input type="color" id="frameColor" value="#0a66c2" class="frame-color-picker">
+                                <label for="frameColor" class="color-picker-label">Çerçeve Rengi</label>
+                            </div>
+                            <div class="text-input-wrapper hidden">
+                                <div class="text-controls">
+                                    <input type="text" id="frameText" class="frame-text-input" 
+                                           placeholder="Çerçeveye metin ekleyin" maxlength="20">
+                                    <div class="color-control">
+                                        <input type="color" id="textColor" value="#ffffff" class="text-color-picker">
+                                        <label for="textColor" class="color-picker-label">Metin Rengi</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quality-wrapper hidden">
+                                <select id="imageQuality" class="form-select quality-select">
+                                    <option value="1080">1080p - HD</option>
+                                    <option value="2048">2K - QHD</option>
+                                    <option value="4096" selected>4K - UHD</option>
+                                </select>
+                                <label for="imageQuality" class="quality-label">Kalite</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preview-container">
+                        <div class="crop-area">
+                            <img id="preview" class="hidden">
+                        </div>
+                    </div>
+
+                    <button id="downloadBtn" class="btn btn-success download-btn hidden">
+                        Fotoğrafı İndir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
