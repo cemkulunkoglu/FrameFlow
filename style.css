@@ -16,6 +16,8 @@ body {
     height: 100vh;
     overflow-y: auto;
     background-color: #f5f5f7;
+    scrollbar-width: thin;
+    /*scrollbar-color: rgb(255, 255, 255, 0.2) transparent;*/
 }
 
 .editor-column {
@@ -436,24 +438,25 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #000;
-        color: #f5f5f7;
+        background-color: #000000;
+        color: #ffffff;
     }
 
     .instructions-column {
-        background-color: #1c1c1e;
+        background-color: #000000;
+        scrollbar-color: rgb(255, 255, 255, 0.2) transparent;
     }
 
     .editor-column {
-        background-color: #2c2c2e;
+        background-color: #1c1c1e;
     }
 
     .instructions-card {
-        background: rgba(44, 44, 46, 0.8);
+        background: rgba(28, 28, 30, 0.8);
     }
 
     .crop-area {
-        background-color: #3a3a3c;
+        background-color: #2c2c2e;
     }
 
     .image-controls {
@@ -475,19 +478,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 
     .info-card {
-        background: rgba(44, 44, 46, 0.8);
+        background: rgba(28, 28, 30, 0.8);
     }
 
     .info-card h6 {
-        color: #fff;
+        color: #ffffff;
     }
 
     .info-card p {
-        color: #999;
+        color: #8e8e93;
     }
 
     .text-muted {
-        color: #999 !important;
+        color: #8e8e93 !important;
     }
 
     .color-picker-wrapper {
@@ -495,15 +498,27 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
     
     .color-picker-label {
-        color: #fff;
+        color: #ffffff;
     }
 
     .feature-list li {
-        color: #999;
+        color: #8e8e93;
     }
     
     .feature-list li:before {
         color: #0077ed;
+    }
+
+    .instructions-column::-webkit-scrollbar-track {
+        background: rgba(44, 44, 46, 0.8);
+    }
+
+    .instructions-column::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .instructions-column::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.7);
     }
 }
 
@@ -550,11 +565,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 
     .frame-text-input {
-        color: #fff;
+        color: #ffffff;
     }
 
     .frame-text-input::placeholder {
-        color: #999;
+        color: #8e8e93;
     }
 }
 
@@ -622,39 +637,65 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .instructions-column::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .instructions-column::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
-    transition: background 0.2s ease;
 }
 
 .instructions-column::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.7);
 }
 
 /* Karanlık mod için scrollbar */
 @media (prefers-color-scheme: dark) {
+    .instructions-column {
+        scrollbar-color: rgb(255, 255, 255, 0.2) transparent;
+    }
+
+    .instructions-column::-webkit-scrollbar-track {
+        background: rgba(44, 44, 46, 0.8);
+    }
+
     .instructions-column::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.5);
     }
 
     .instructions-column::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.7);
+    }
+}
+
+/* Gündüz modu için scrollbar stilleri */
+@media (prefers-color-scheme: light) {
+    .instructions-column {
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+
+    .instructions-column::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .instructions-column::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .instructions-column::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.4);
     }
 }
 
 /* Firefox için scrollbar (opsiyonel) */
 .instructions-column {
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    /*scrollbar-color: rgb(255, 255, 255, 0.2) transparent;*/
 }
 
 @media (prefers-color-scheme: dark) {
     .instructions-column {
-        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        scrollbar-color: rgb(255, 255, 255, 0.2) transparent;
     }
 }
 
@@ -669,11 +710,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .quality-select {
+    color: #1d1d1f;
+    background-color: #ffffff;
     border: none !important;
     background: transparent;
     font-size: 1rem;
-    color: #1d1d1f;
-    padding: 4px 12px;
     cursor: pointer;
     min-width: 120px;
 }
@@ -691,15 +732,194 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
     
     .quality-select {
-        color: #fff;
+        color: #ffffff;
+        background-color: #2c2c2e;
     }
     
     .quality-label {
-        color: #fff;
+        color: #ffffff;
     }
 }
 
 .lead {
     font-size: 1.1rem;
     font-weight: 400;
+}
+
+/* Gece/Gündüz modu switch stilini güncelle */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 34px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f5f5f7;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    z-index: 2;
+}
+
+.slider-icon {
+    font-size: 14px;
+    z-index: 1;
+}
+
+input:checked + .slider {
+    background-color: #1c1c1e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+    border: 1px solid #e0e0e0;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Dark mode stilleri için yeni class */
+body.dark-mode {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+body.dark-mode .instructions-column {
+    background-color: #000000;
+    scrollbar-color: rgb(255, 255, 255, 0.2) transparent;
+}
+
+body.dark-mode .editor-column {
+    background-color: #1c1c1e;
+}
+
+body.dark-mode .instructions-card,
+body.dark-mode .info-card {
+    background: rgba(28, 28, 30, 0.8);
+}
+
+body.dark-mode .text-input-wrapper,
+body.dark-mode .color-picker-wrapper,
+body.dark-mode .quality-wrapper {
+    background: rgba(44, 44, 46, 0.9);
+}
+
+body.dark-mode .frame-text-input,
+body.dark-mode .quality-select,
+body.dark-mode .color-picker-label,
+body.dark-mode .quality-label {
+    color: #ffffff;
+}
+
+body.dark-mode .frame-text-input::placeholder {
+    color: #8e8e93;
+}
+
+body.dark-mode .text-muted,
+body.dark-mode .info-card p,
+body.dark-mode .feature-list li {
+    color: #8e8e93 !important;
+}
+
+body.dark-mode .info-card h6,
+body.dark-mode h5,
+body.dark-mode .step p {
+    color: #ffffff;
+}
+
+body.dark-mode .crop-area {
+    background-color: #2c2c2e;
+}
+
+/* Mobil görünüm için */
+@media (max-width: 768px) {
+    .theme-switch-wrapper {
+        margin-left: 1rem;
+    }
+    
+    h1.display-4 {
+        font-size: 2rem;
+        margin-bottom: 0;
+    }
+}
+
+/* Option öğeleri için stil ayarları */
+.quality-select option {
+    color: #1d1d1f;
+    background-color: #ffffff;
+}
+
+body.dark-mode .quality-select option {
+    color: #ffffff;
+    background-color: #2c2c2e;
+}
+
+/* Light mode stilleri için yeni class */
+body.light-mode {
+    background-color: #f5f5f7; /* Arka plan rengi */
+    color: #1d1d1f; /* Yazı rengi */
+}
+
+body.light-mode .instructions-column {
+    background-color: #f5f5f7; /* Açıklama sütunu arka plan rengi */
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+body.light-mode .editor-column {
+    background-color: #ffffff; /* Düzenleme alanı arka plan rengi */
+}
+
+body.light-mode .instructions-card,
+body.light-mode .info-card {
+    background: rgba(255, 255, 255, 0.8); /* Kart arka plan rengi */
+}
+
+body.light-mode .text-input-wrapper,
+body.light-mode .color-picker-wrapper,
+body.light-mode .quality-wrapper {
+    background: rgba(255, 255, 255, 0.9); /* Diğer bileşen arka plan rengi */
+}
+
+body.light-mode .frame-text-input,
+body.light-mode .quality-select,
+body.light-mode .color-picker-label,
+body.light-mode .quality-label {
+    color: #1d1d1f; /* Yazı rengi */
 }

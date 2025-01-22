@@ -6,8 +6,6 @@ const frameText = document.getElementById('frameText');
 const colorPickerWrapper = document.querySelector('.color-picker-wrapper');
 const textInputWrapper = document.querySelector('.text-input-wrapper');
 const textColor = document.getElementById('textColor');
-const horizontalRange = document.getElementById('horizontalRange');
-const verticalRange = document.getElementById('verticalRange');
 
 // Çerçeve elementi oluştur
 const frameBorder = document.createElement('div');
@@ -309,6 +307,28 @@ downloadBtn.addEventListener('click', function() {
     link.click();
 });
 
-horizontalRange.addEventListener('input', updatePreview);
-verticalRange.addEventListener('input', updatePreview);
+// Gece/Gündüz modu kontrolü
+const darkModeToggle = document.getElementById('darkMode');
+
+// Sayfa yüklendiğinde localStorage'dan tercihi al
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+    document.body.classList.remove('light-mode'); // Light mode'u kaldır
+    darkModeToggle.checked = true;
+} else {
+    document.body.classList.add('light-mode'); // Varsayılan olarak light mode
+}
+
+// Switch değiştiğinde
+darkModeToggle.addEventListener('change', function(e) {
+    if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        document.body.classList.remove('light-mode'); // Light mode'u kaldır
+        localStorage.setItem('darkMode', 'true');
+    } else {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode'); // Light mode'u ekle
+        localStorage.setItem('darkMode', 'false');
+    }
+});
 
